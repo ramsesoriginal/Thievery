@@ -1,0 +1,23 @@
+#game {
+	position: relative;
+	width: 800px;
+	float: left;
+}
+
+#game canvas{
+	max-width: 100%;
+}
+
+#gameOverScreen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(255,255,255,0.5);
+	text-align: center;
+	padding-top: 40%;
+	font-family: 'Fontdiner Swanky', cursive;
+	font-size: 24px;
+	display: none;
+}
