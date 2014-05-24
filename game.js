@@ -92,9 +92,23 @@ function initBascis(item, skipPlacement) {
 	item.y = 0;
 	item.shouldRedraw = true;
 	item.pickup = false;
+	item.imgloaded = false;
+	item.img = new Image();
+	item.img.onload = function() {
+	    item.imgloaded = true;
+	    item.shouldRedraw = true;
+	    console.log('sprite loaded', item, this);
+	};
+	item.img.src = 'assets/'+item.sprite;
+
 	item.draw = function() {
-		context.fillStyle = this.debugcolor;
-		context.fillRect(this.x,this.y, (width/gridsize),(height/gridsize));
+		if (!this.imgloaded) {
+			context.fillStyle = this.debugcolor;
+			context.fillRect(this.x,this.y, (width/gridsize),(height/gridsize));
+		} else {
+			//context.drawImage(this.img, 0, 0, this.img.clientWidth, this.img.clientHeight, this.x,this.y, (width/gridsize),(height/gridsize));
+			context.drawImage(this.img, this.x,this.y, (width/gridsize),(height/gridsize));
+		}
 		this.shouldRedraw = false;
 	};
 	if (!skipPlacement) {
@@ -146,11 +160,18 @@ function createTile(row, column) {
 	t.x= (width/gridsize)*column;
 	t.y= (height/gridsize)*row;
 	t.draw= function() {
-			context.fillStyle = this.debugcolor;
-			context.fillRect(this.x,this.y, (width/gridsize),(height/gridsize));
+			if (!this.imgloaded) {
+				context.fillStyle = this.debugcolor;
+				context.fillRect(this.x,this.y, (width/gridsize),(height/gridsize));
+			} else {
+				context.drawImage(this.img, this.x,this.y, (width/gridsize),(height/gridsize));
+			}
 			context.strokeStyle = "#333333";
 			context.strokeRect(this.x,this.y, (width/gridsize),(height/gridsize));
 			this.shouldRedraw = false;
+			if (this.content) {
+				this.content.shouldRedraw = true;
+			}
 		}
 
 	return t;
